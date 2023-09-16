@@ -5,10 +5,6 @@ const throttleFunction = (func, delay) => {
     // Current called time of the function
     let now = new Date().getTime();
 
-    // Logging the difference between previously
-    // called and current called timings
-    console.log(now - prev, delay);
-
     // If difference is greater than delay call
     // the function again.
     if (now - prev > delay) {
@@ -24,11 +20,32 @@ const throttleFunction = (func, delay) => {
 
 document.querySelector("#center").addEventListener(
   "mousemove",
-  throttleFunction(() => {
-    // Make a div
+  throttleFunction((dets) => {
+    // Make a div usinng javascript
     let newDiv = document.createElement("div");
 
     newDiv.classList.add("imageDiv");
-    console.log("Hello");
-  }, 1500)
+    newDiv.style.left = dets.clientX + "px";
+    newDiv.style.top = dets.clientY + "px";
+
+    let img = document.createElement("img");
+    img.setAttribute("src", "https://picsum.photos/200/300");
+    newDiv.appendChild(img);
+
+    gsap.to (img, {
+      y: "0",
+      ease: Power2,
+      duration: 0.5,
+    });
+    gsap.to (img, {
+      y: "100%",
+      delay: 0.7,
+      ease: Power2,
+    });
+
+    document.body.appendChild(newDiv);
+    setTimeout(() => {
+      newDiv.remove();
+    }, 1000);
+  }, 500)
 );
